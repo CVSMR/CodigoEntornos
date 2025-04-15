@@ -87,14 +87,42 @@ public class EntornosFactorizar {
 			return total;
 		}
 
-		private double aplicarCuponDescuento(double total, String codigoCupon) {
-			if (codigoCupon.equals("CUPOFF")) {
-				total *= 0.8;
-			} else if (codigoCupon.equals("NAVIDAD2025")) {
-				total *= 0.75;
-			}
-			return total;
-		}
+	 
+	 	// Las ofertas conbinadas estan metidas en el mismo metodo
+	    
+	    private double aplicarDescuentosPromocionales(double total,boolean esOfertaEspecial,boolean esNavidad,boolean esMiembroVip){
+	    	if (esOfertaEspecial) {
+	            total *= 0.9;  
+	        }
+	        if (esNavidad) {
+	            total *= 0.85; 
+	        }
+	        if (esMiembroVip) {
+	            total *= 0.8;  
+	        }
+	        return total;
+	    }
+	    
+	    //Metodos de pago refatcorizados en un metodo
+	    
+	    private double aplicarRecargoPorMetodoPago(double total,String metodoPago) {
+	    	if (metodoPago.equals("TarjetaCredito")) {
+	    		total *=1.05;
+	    	} else if (metodoPago.equals("PayPal")) {
+	    		total *=1.02;
+	    	}
+	    	return total;
+	    }
+	  	//Aplicar cupones descuento
+	 
+	    private double aplicarCuponDescuento(double total, String codigoCupon) {
+	        if (codigoCupon.equals("CUPOFF")) {
+	            total *= 0.8;
+	        } else if (codigoCupon.equals("NAVIDAD2025")) {
+	            total *= 0.75;
+	        }
+	        return total;
+	    }
 
 		private boolean validarProducto(String tipoProducto, String categoriaProducto) {
 			if (tipoProducto.equals("Electronico") && categoriaProducto.equals("Smartphones")) {
