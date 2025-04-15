@@ -4,7 +4,7 @@ public class EntornosFactorizar {
 	 public double calculaDato(double precioBase, int cantidad, double descuento, double impuestos, boolean tieneTarjetaFidelidad, double saldoTarjeta, boolean esOfertaEspecial, boolean esNavidad, boolean esMiembroVip, String metodoPago, boolean aplicarCuotas, int cuota, boolean esEnvioGratis, double precioEnvio, String tipoProducto, String categoriaProducto, String codigoCupon, Usuario usuario) {
 	        double total = precioBase * cantidad;
 
-	       
+	       // descuentos
 	        if (descuento > 0) {
 	            total -= total * (descuento / 100);
 	        }
@@ -14,9 +14,11 @@ public class EntornosFactorizar {
 	            total -= saldoTarjeta;
 	        }
 
-	       
+	        // impuestos
 	        total += total * (impuestos / 100);
 
+	        // Ofertas
+	        
 	        if (esOfertaEspecial) {
 	            total *= 0.9;
 	        }
@@ -31,6 +33,7 @@ public class EntornosFactorizar {
 	            total *= 0.8;
 	        }
 
+	        // Metodos de pago
 	        
 	        if (metodoPago.equals("TarjetaCredito")) {
 	            total *= 1.05;
@@ -38,7 +41,8 @@ public class EntornosFactorizar {
 	            total *= 1.02;
 	        }
 
-	      
+	        // cuotas
+	        
 	        if (aplicarCuotas) {
 	            if (cuota == 3) {
 	                total *= 1.1;
@@ -49,7 +53,8 @@ public class EntornosFactorizar {
 	            }
 	        }
 
-
+	        // Envio gratis
+	        
 	        if (!esEnvioGratis) {
 	            total += precioEnvio;
 	        }
@@ -59,12 +64,14 @@ public class EntornosFactorizar {
 	            total = aplicarCuponDescuento(total, codigoCupon);
 	        }
 
-	    
+	        // Invalidacion
+	        
 	        if (!validarProducto(tipoProducto, categoriaProducto)) {
 	            throw new IllegalArgumentException("El producto no es válido para esta compra.");
 	        }
 
-	      
+	        // usuario nulo
+	        
 	        if (usuario != null) {
 	            total = aplicarDescuentoPorUsuario(usuario, total);
 	        }
@@ -77,7 +84,8 @@ public class EntornosFactorizar {
 	        return total;
 	    }
 
-	  
+	  	//Aplicar cupones descuento
+	 
 	    private double aplicarCuponDescuento(double total, String codigoCupon) {
 	        if (codigoCupon.equals("CUPOFF")) {
 	            total *= 0.8;
@@ -87,7 +95,8 @@ public class EntornosFactorizar {
 	        return total;
 	    }
 
-	   
+	    // validar producto
+	    
 	    private boolean validarProducto(String tipoProducto, String categoriaProducto) {
 	        if (tipoProducto.equals("Electronico") && categoriaProducto.equals("Smartphones")) {
 	            return true;
@@ -99,7 +108,8 @@ public class EntornosFactorizar {
 	        return false;
 	    }
 
-	   
+	   // Aplicar descuentos por usuario
+	    
 	    private double aplicarDescuentoPorUsuario(Usuario usuario, double total) {
 	        if (usuario.esEmpleado()) {
 	            total *= 0.7; 
