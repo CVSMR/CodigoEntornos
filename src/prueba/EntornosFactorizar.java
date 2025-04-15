@@ -22,13 +22,10 @@ public class EntornosFactorizar {
 	        total = aplicarDescuentosPromocionales(total, esOfertaEspecial,esNavidad,esMiembroVip);
 	       
 	        // Metodos de pago
+	        // Ahora aplico recargos por los metodos de pago
 	        
-	        if (metodoPago.equals("TarjetaCredito")) {
-	            total *= 1.05;
-	        } else if (metodoPago.equals("PayPal")) {
-	            total *= 1.02;
-	        }
-
+	        total = aplicarRecargoPorMetodoPago(total,metodoPago);
+	        
 	        // cuotas
 	        
 	        if (aplicarCuotas) {
@@ -73,7 +70,7 @@ public class EntornosFactorizar {
 	    }
 
 	 
-	// Las ofertas conbinadas estan metidas en el mismo metodo
+	 	// Las ofertas conbinadas estan metidas en el mismo metodo
 	    
 	    private double aplicarDescuentosPromocionales(double total,boolean esOfertaEspecial,boolean esNavidad,boolean esMiembroVip){
 	    	if (esOfertaEspecial) {
@@ -88,6 +85,16 @@ public class EntornosFactorizar {
 	        return total;
 	    }
 	    
+	    //Metodos de pago refatcorizados en un metodo
+	    
+	    private double aplicarRecargoPorMetodoPago(double total,String metodoPago) {
+	    	if (metodoPago.equals("TarjetaCredito")) {
+	    		total *=1.05;
+	    	} else if (metodoPago.equals("PayPal")) {
+	    		total *=1.02;
+	    	}
+	    	return total;
+	    }
 	  	//Aplicar cupones descuento
 	 
 	    private double aplicarCuponDescuento(double total, String codigoCupon) {
