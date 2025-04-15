@@ -17,22 +17,10 @@ public class EntornosFactorizar {
 	        // impuestos
 	        total += total * (impuestos / 100);
 
-	        // Ofertas
+	        // Ofertas combinadas
 	        
-	        if (esOfertaEspecial) {
-	            total *= 0.9;
-	        }
-
-	     
-	        if (esNavidad) {
-	            total *= 0.85;
-	        }
-
-	     
-	        if (esMiembroVip) {
-	            total *= 0.8;
-	        }
-
+	        total = aplicarDescuentosPromocionales(total, esOfertaEspecial,esNavidad,esMiembroVip);
+	       
 	        // Metodos de pago
 	        
 	        if (metodoPago.equals("TarjetaCredito")) {
@@ -84,6 +72,22 @@ public class EntornosFactorizar {
 	        return total;
 	    }
 
+	 
+	// Las ofertas conbinadas estan metidas en el mismo metodo
+	    
+	    private double aplicarDescuentosPromocionales(double total,boolean esOfertaEspecial,boolean esNavidad,boolean esMiembroVip){
+	    	if (esOfertaEspecial) {
+	            total *= 0.9;  
+	        }
+	        if (esNavidad) {
+	            total *= 0.85; 
+	        }
+	        if (esMiembroVip) {
+	            total *= 0.8;  
+	        }
+	        return total;
+	    }
+	    
 	  	//Aplicar cupones descuento
 	 
 	    private double aplicarCuponDescuento(double total, String codigoCupon) {
