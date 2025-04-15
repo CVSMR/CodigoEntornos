@@ -1,7 +1,11 @@
 package prueba;
 
 public class EntornosFactorizar {
-	 public double calculaDato(double precioBase, int cantidad, double descuento, double impuestos, boolean tieneTarjetaFidelidad, double saldoTarjeta, boolean esOfertaEspecial, boolean esNavidad, boolean esMiembroVip, String metodoPago, boolean aplicarCuotas, int cuota, boolean esEnvioGratis, double precioEnvio, String tipoProducto, String categoriaProducto, String codigoCupon, Usuario usuario) {
+	 public double calculaDato(double precioBase, int cantidad, double descuento, double impuestos, boolean tieneTarjetaFidelidad,
+			 double saldoTarjeta, boolean esOfertaEspecial, boolean esNavidad, String metodoPago, boolean aplicarCuotas,
+			 int cuota, boolean esEnvioGratis, double precioEnvio, String tipoProducto, String categoriaProducto, String codigoCupon,
+			 Usuario usuario) {
+		 
 	        double total = precioBase * cantidad;
 
 	       
@@ -27,9 +31,7 @@ public class EntornosFactorizar {
 	        }
 
 	     
-	        if (esMiembroVip) {
-	            total *= 0.8;
-	        }
+	        
 
 	        
 	        if (metodoPago.equals("TarjetaCredito")) {
@@ -101,12 +103,20 @@ public class EntornosFactorizar {
 
 	   
 	    private double aplicarDescuentoPorUsuario(Usuario usuario, double total) {
-	        if (usuario.esEmpleado()) {
-	            total *= 0.7; 
-	        } else if (usuario.esMiembroGold()) {
-	            total *= 0.85;  
-	        } else if (usuario.esMiembroSilver()) {
-	            total *= 0.9; 
+	      
+	        switch(usuario.getTipoUsuario()) {
+				case EMPLEADO ->{
+					total *= 0.7; 
+				}
+				case VIP ->{
+					total *= 0.8;
+				}
+				case GOLD ->{
+					total *= 0.85;
+				}
+				case SILVER ->{
+					total *= 0.9; 
+				}
 	        }
 	        return total;
 	    }
