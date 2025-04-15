@@ -1,7 +1,12 @@
 package prueba;
 
 public class EntornosFactorizar {
-	 public double calculaDato(double precioBase, int cantidad, double descuento, double impuestos, boolean tieneTarjetaFidelidad, double saldoTarjeta, boolean esOfertaEspecial, boolean esNavidad, boolean esMiembroVip, String metodoPago, boolean aplicarCuotas, int cuota, boolean esEnvioGratis, double precioEnvio, String tipoProducto, String categoriaProducto, String codigoCupon, Usuario usuario) {
+
+	    public double calculaDato(double precioBase, int cantidad, double descuento, double impuestos, 
+	    		boolean tieneTarjetaFidelidad, double saldoTarjeta, boolean esOfertaEspecial, boolean esNavidad, 
+	    		boolean esMiembroVip, String metodoPago, boolean aplicarCuotas, int cuota, boolean esEnvioGratis, double precioEnvio, 
+	    		String tipoProducto, String categoriaProducto, String codigoCupon, Usuario usuario) {
+	    	
 	        double total = precioBase * cantidad;
 
 	       
@@ -16,39 +21,15 @@ public class EntornosFactorizar {
 
 	       
 	        total += total * (impuestos / 100);
-
-	        if (esOfertaEspecial) {
-	            total *= 0.9;
-	        }
-
-	     
-	        if (esNavidad) {
-	            total *= 0.85;
-	        }
-
-	     
-	        if (esMiembroVip) {
-	            total *= 0.8;
-	        }
-
-	        
-	        if (metodoPago.equals("TarjetaCredito")) {
-	            total *= 1.05;
-	        } else if (metodoPago.equals("PayPal")) {
-	            total *= 1.02;
-	        }
-
-	      
-	        if (aplicarCuotas) {
-	            if (cuota == 3) {
-	                total *= 1.1;
-	            } else if (cuota == 6) {
-	                total *= 1.2;
-	            } else if (cuota == 12) {
-	                total *= 1.3;
-	            }
-	        }
-
+	        // A partir de aqui copiaremos estas condiciones en un metodo a parte
+	        	descuentosEspeciales(esMiembroVip, esOfertaEspecial, esNavidad, total);
+	        //
+	        // Añado metodos de pago
+	        	pago(total, metodoPago);
+	        //
+	        // Metodos de cuota
+	        	cuota(aplicarCuotas, total, cuota);
+	        //
 
 	        if (!esEnvioGratis) {
 	            total += precioEnvio;
@@ -101,7 +82,7 @@ public class EntornosFactorizar {
 
 	   
 	    private double aplicarDescuentoPorUsuario(Usuario usuario, double total) {
-	        if (usuario.esEmpleado()) {
+	        if (usuario.esMiembroGold()) {
 	            total *= 0.7; 
 	        } else if (usuario.esMiembroGold()) {
 	            total *= 0.85;  
@@ -109,5 +90,44 @@ public class EntornosFactorizar {
 	            total *= 0.9; 
 	        }
 	        return total;
+	    }
+	    
+	    private double descuentosEspeciales(boolean esMiembroVip, boolean esOfertaEspecial, boolean esNavidad, double total) {
+	    	if (esOfertaEspecial) {
+	            total *= 0.9;
+	        }
+
+	     
+	        if (esNavidad) {
+	            total *= 0.85;
+	        }
+
+	     
+	        if (esMiembroVip) {
+	            total *= 0.8;
+	        }
+	        
+	        return total;
+	    }
+	    private double pago(double total, String metodoPago) {
+	    	
+	    	if (metodoPago.equals("TarjetaCredito")) {
+	            total *= 1.05;
+	        } else if (metodoPago.equals("PayPal")) {
+	            total *= 1.02;
+	        }
+	    	return total;
+	    }
+	    private double cuota(boolean aplicarCuotas, double total, int cuota ) {
+	    	if (aplicarCuotas) {
+	            if (cuota == 3) {
+	                total *= 1.1;
+	            } else if (cuota == 6) {
+	                total *= 1.2;
+	            } else if (cuota == 12) {
+	                total *= 1.3;
+	            }
+	        }
+	    	return total;
 	    }
 }
