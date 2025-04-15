@@ -3,12 +3,12 @@ package prueba;
 public class EntornosFactorizar {
 	
 		public double calculaDato(double precioBase, int cantidad, double descuento, double impuestos,
-				boolean tieneTarjetaFidelidad, double saldoTarjeta, boolean esEnvioGratis,
+				boolean tieneTarjetaFidelidad, double saldoTarjeta, boolean esEnvioGratis, boolean esOfertaEspecial, boolean esNavidad,
 				double precioEnvio, String tipoProducto, String categoriaProducto, String codigoCupon, Usuario usuario) {
 		
 			double total = precioBase * cantidad;
 			
-			// ESto tinee que ir junto?
+			
 			if (descuento > 0) {
 				total -= total * (descuento / 100);
 			}
@@ -18,56 +18,51 @@ public class EntornosFactorizar {
 			}
 
 			total += total * (impuestos / 100);
-			// Tiene que ir junto
+			
 
 		
 
-			// Envio gratis
+			// Metodo en el cual suma el precio del envio en caso de no ser envio gratis.
 			if (!esEnvioGratis) {
 				total += precioEnvio;
 			}
 
+			//Creo esta nueva llamada a método en caso de que haya presente una campaña de descuento.
+			if(esOfertaEspecial || esNavidad) {
+				total = aplicarDescuentoCampaña(total, esOfertaEspecial, esNavidad);
+			}
+			
+			
+			//llamada a método donde se aplicaria cupon descuento en caso de contener un código descuento.
 			if (codigoCupon != null && !codigoCupon.isEmpty()) {
 				total = aplicarCuponDescuento(total, codigoCupon);
 			}
 
-	     
-	        
-
-	        
-
-			// ESTO SE TIENE QUE QUEDAR
-			if (usuario != null) {
-				total = aplicarDescuentoPorUsuario(usuario, total);
-			}
-
 			
-			if (total < 0) {
-				total = 0;
-			}
-
-	        // Envio gratis
 	        
-	        if (!esEnvioGratis) {
-	            total += precioEnvio;
-	        }
-	        
-	        // Invalidacion
+	        // Valida el tipo de producto comprobando que exista y lanzando excpcion en caso contrario.
 	        
 	        if (!validarProducto(tipoProducto, categoriaProducto)) {
 	            throw new IllegalArgumentException("El producto no es válido para esta compra.");
 	        }
 
-	        // usuario nulo
-	        
-	        if (usuario != null) {
+	        // Llamada a método para aplicar descuento por tipo de membresia, siempre que el usuario no sea null.
+	        if (usuario != null && !usuario.getTipoUsuario().equals(Membresia.NORMAL)) {
 	            total = aplicarDescuentoPorUsuario(usuario, total);
 	        }
 	        
+	        // ESTO SE TIENE QUE QUEDAR
+			
+			
+	     	if (total < 0) {
+	     		total = 0;
+	     	}
 	        return total;
+	        
 	    }
 
-		private double aplicarCuotas(double total, boolean aplicarCuotas, int cuota) {
+		//Se separa este método del anterior y se pone como public, habra que acceder a el despues de acceder al metodo calcularDato.
+		public double aplicarCuotas(double total, boolean aplicarCuotas, int cuota) {
 			// Cuotas
 			if (aplicarCuotas) {
 				if (cuota == 3) {
@@ -81,7 +76,9 @@ public class EntornosFactorizar {
 			return total;
 		}
 		
-		private double aplicarCuoteMetodoPago(MetodoPago metodo, double total) {
+		//Se separa este método del método inicial para que quede más limpio, habra que acceder a el despues de los dos anteriores.
+		//Aplicara un coste segun el método de pago.
+		public double aplicarCuoteMetodoPago(MetodoPago metodo, double total) {
 			// Metodo PAgos
 			if (metodo.equals(MetodoPago.TARJETA_CREDITO)) {
 				total *= 1.05;
@@ -91,7 +88,17 @@ public class EntornosFactorizar {
 			return total;
 		}
 
-	        
+		//Método para aplicar descuentos por campaña.
+	    private double aplicarDescuentoCampaña(double total, boolean esOfertaEspecial, boolean esNavidad) {
+	    	if (esOfertaEspecial) {
+	            total *= 0.9;
+	        }
+
+	        if (esNavidad) {
+	            total *= 0.85;
+	        }
+	        return total;
+	    }
 
 	  
 	    private double aplicarCuponDescuento(double total, String codigoCupon) {
@@ -115,6 +122,7 @@ public class EntornosFactorizar {
 		}
 
 	   
+		//Este método aplicara descuento en base a la membresia.
 	    private double aplicarDescuentoPorUsuario(Usuario usuario, double total) {
 	      
 	        switch(usuario.getTipoUsuario()) {
@@ -130,6 +138,10 @@ public class EntornosFactorizar {
 				case SILVER ->{
 					total *= 0.9; 
 				}
+				default ->{
+					
+				}
+				
 	        }
 	        return total;
 	    }

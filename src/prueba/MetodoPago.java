@@ -1,6 +1,5 @@
 package prueba;
 
 public enum MetodoPago {
-TARJETA_CREDITO,
-PAYPAL
+	TARJETA_CREDITO, PAYPAL;
 }
