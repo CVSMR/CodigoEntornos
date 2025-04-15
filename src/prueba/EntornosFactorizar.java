@@ -45,23 +45,11 @@ public class EntornosFactorizar {
 				total = 0;
 			}
 
-			return total;
-		}
-
-		private double aplicarOpcionesEspeciales(boolean esOfertaEspecial, boolean esNavidad, boolean esMiembroVip,
-				double total) {// Metodo añadido, quiza hay que incializar double TOTAL;
-			// Opciones especiales
-			if (esOfertaEspecial) {
-				total *= 0.9;
-			}
-			if (esNavidad) {
-				total *= 0.85;
-			}
-			if (esMiembroVip) {
-				total *= 0.8;
-			}
-			return total;
-		}
+	        // Envio gratis
+	        
+	        if (!esEnvioGratis) {
+	            total += precioEnvio;
+	        }
 
 		private double aplicarCuotas(double total, boolean aplicarCuotas, int cuota) {
 			// Cuotas
@@ -87,14 +75,32 @@ public class EntornosFactorizar {
 			return total;
 		}
 
-		private double aplicarCuponDescuento(double total, String codigoCupon) {
-			if (codigoCupon.equals("CUPOFF")) {
-				total *= 0.8;
-			} else if (codigoCupon.equals("NAVIDAD2025")) {
-				total *= 0.75;
-			}
-			return total;
-		}
+	        // Invalidacion
+	        
+	        if (!validarProducto(tipoProducto, categoriaProducto)) {
+	            throw new IllegalArgumentException("El producto no es válido para esta compra.");
+	        }
+
+	        // usuario nulo
+	        
+	        if (usuario != null) {
+	            total = aplicarDescuentoPorUsuario(usuario, total);
+	        }
+	        if (esMiembroVip) {
+	            total *= 0.8;  
+	        }
+	        return total;
+	    }
+
+	  
+	    private double aplicarCuponDescuento(double total, String codigoCupon) {
+	        if (codigoCupon.equals("CUPOFF")) {
+	            total *= 0.8;
+	        } else if (codigoCupon.equals("NAVIDAD2025")) {
+	            total *= 0.75;
+	        }
+	        return total;
+	    }
 
 		private boolean validarProducto(String tipoProducto, String categoriaProducto) {
 			if (tipoProducto.equals("Electronico") && categoriaProducto.equals("Smartphones")) {
