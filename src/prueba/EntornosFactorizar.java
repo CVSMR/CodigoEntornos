@@ -1,7 +1,11 @@
 package prueba;
 
 public class EntornosFactorizar {
-	 public double calculaDato(double precioBase, int cantidad, double descuento, double impuestos, boolean tieneTarjetaFidelidad, double saldoTarjeta, boolean esOfertaEspecial, boolean esNavidad, boolean esMiembroVip, String metodoPago, boolean aplicarCuotas, int cuota, boolean esEnvioGratis, double precioEnvio, String tipoProducto, String categoriaProducto, String codigoCupon, Usuario usuario) {
+
+	    public double calculaDato(double precioBase, int cantidad, double descuento, double impuestos, 
+	    		boolean tieneTarjetaFidelidad, double saldoTarjeta, boolean esOfertaEspecial, boolean esNavidad, 
+	    		boolean esMiembroVip, String metodoPago, boolean aplicarCuotas, int cuota, boolean esEnvioGratis, double precioEnvio, 
+	    		String tipoProducto, String categoriaProducto, String codigoCupon, Usuario usuario) {
 	        double total = precioBase * cantidad;
 
 	       
@@ -16,22 +20,10 @@ public class EntornosFactorizar {
 
 	       
 	        total += total * (impuestos / 100);
-
-	        if (esOfertaEspecial) {
-	            total *= 0.9;
-	        }
-
-	     
-	        if (esNavidad) {
-	            total *= 0.85;
-	        }
-
-	     
-	        if (esMiembroVip) {
-	            total *= 0.8;
-	        }
-
-	        
+	        // A partir de aqui copiaremos estas condiciones en un metodo a parte
+	        	descuentosEspeciales(esMiembroVip, esOfertaEspecial, esNavidad, total);
+	        //
+	       
 	        if (metodoPago.equals("TarjetaCredito")) {
 	            total *= 1.05;
 	        } else if (metodoPago.equals("PayPal")) {
@@ -101,12 +93,29 @@ public class EntornosFactorizar {
 
 	   
 	    private double aplicarDescuentoPorUsuario(Usuario usuario, double total) {
-	        if (usuario.esEmpleado()) {
+	        if (usuario.esMiembroGold()) {
 	            total *= 0.7; 
 	        } else if (usuario.esMiembroGold()) {
 	            total *= 0.85;  
 	        } else if (usuario.esMiembroSilver()) {
 	            total *= 0.9; 
+	        }
+	        return total;
+	    }
+	    
+	    private double descuentosEspeciales(boolean esMiembroVip, boolean esOfertaEspecial, boolean esNavidad, double total) {
+	    	if (esOfertaEspecial) {
+	            total *= 0.9;
+	        }
+
+	     
+	        if (esNavidad) {
+	            total *= 0.85;
+	        }
+
+	     
+	        if (esMiembroVip) {
+	            total *= 0.8;
 	        }
 	        return total;
 	    }
