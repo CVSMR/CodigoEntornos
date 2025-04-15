@@ -7,6 +7,7 @@ public class Usuario {
 	private boolean empleado;
 	private boolean miembroGold;
 	private boolean miembroSilver;
+	private Membresia tipo;
 
 	public Usuario(String nombre, String email, boolean empleado, boolean miembroGold, boolean miembroSilver) {
 		this.nombre = nombre;
@@ -14,6 +15,8 @@ public class Usuario {
 		this.empleado = empleado;
 		this.miembroGold = miembroGold;
 		this.miembroSilver = miembroSilver;
+		tipo = Membresia.GOLD;
+		
 	}
 
 	public boolean esEmpleado() {
