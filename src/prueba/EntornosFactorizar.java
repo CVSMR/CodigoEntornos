@@ -6,6 +6,7 @@ public class EntornosFactorizar {
 	    		boolean tieneTarjetaFidelidad, double saldoTarjeta, boolean esOfertaEspecial, boolean esNavidad, 
 	    		boolean esMiembroVip, String metodoPago, boolean aplicarCuotas, int cuota, boolean esEnvioGratis, double precioEnvio, 
 	    		String tipoProducto, String categoriaProducto, String codigoCupon, Usuario usuario) {
+	    	
 	        double total = precioBase * cantidad;
 
 	       
@@ -23,13 +24,9 @@ public class EntornosFactorizar {
 	        // A partir de aqui copiaremos estas condiciones en un metodo a parte
 	        	descuentosEspeciales(esMiembroVip, esOfertaEspecial, esNavidad, total);
 	        //
-	       
-	        if (metodoPago.equals("TarjetaCredito")) {
-	            total *= 1.05;
-	        } else if (metodoPago.equals("PayPal")) {
-	            total *= 1.02;
-	        }
-
+	        // Añado metodos de pago
+	        	pago(total, metodoPago);
+	        //
 	      
 	        if (aplicarCuotas) {
 	            if (cuota == 3) {
@@ -117,6 +114,16 @@ public class EntornosFactorizar {
 	        if (esMiembroVip) {
 	            total *= 0.8;
 	        }
+	        
 	        return total;
+	    }
+	    private double pago(double total, String metodoPago) {
+	    	
+	    	if (metodoPago.equals("TarjetaCredito")) {
+	            total *= 1.05;
+	        } else if (metodoPago.equals("PayPal")) {
+	            total *= 1.02;
+	        }
+	    	return total;
 	    }
 }
