@@ -27,17 +27,9 @@ public class EntornosFactorizar {
 	        // Añado metodos de pago
 	        	pago(total, metodoPago);
 	        //
-	      
-	        if (aplicarCuotas) {
-	            if (cuota == 3) {
-	                total *= 1.1;
-	            } else if (cuota == 6) {
-	                total *= 1.2;
-	            } else if (cuota == 12) {
-	                total *= 1.3;
-	            }
-	        }
-
+	        // Metodos de cuota
+	        	cuota(aplicarCuotas, total, cuota);
+	        //
 
 	        if (!esEnvioGratis) {
 	            total += precioEnvio;
@@ -123,6 +115,18 @@ public class EntornosFactorizar {
 	            total *= 1.05;
 	        } else if (metodoPago.equals("PayPal")) {
 	            total *= 1.02;
+	        }
+	    	return total;
+	    }
+	    private double cuota(boolean aplicarCuotas, double total, int cuota ) {
+	    	if (aplicarCuotas) {
+	            if (cuota == 3) {
+	                total *= 1.1;
+	            } else if (cuota == 6) {
+	                total *= 1.2;
+	            } else if (cuota == 12) {
+	                total *= 1.3;
+	            }
 	        }
 	    	return total;
 	    }
