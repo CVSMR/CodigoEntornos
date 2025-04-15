@@ -4,29 +4,28 @@ public class Usuario {
 
 	private String nombre;
 	private String email;
-	private boolean empleado;
-	private boolean miembroGold;
-	private boolean miembroSilver;
+	private Membresia tipoUsuario;
 
-	public Usuario(String nombre, String email, boolean empleado, boolean miembroGold, boolean miembroSilver) {
+	public Usuario(String nombre, String email, Membresia tipo) {
 		this.nombre = nombre;
 		this.email = email;
-		this.empleado = empleado;
-		this.miembroGold = miembroGold;
-		this.miembroSilver = miembroSilver;
+		tipoUsuario = tipo;
+		
 	}
 
-	public boolean esEmpleado() {
-		return empleado;
+	
+
+	public Membresia getTipoUsuario() {
+		return tipoUsuario;
 	}
 
-	public boolean esMiembroGold() {
-		return miembroGold;
+
+
+	public void setTipoUsuario(Membresia tipoUsuario) {
+		this.tipoUsuario = tipoUsuario;
 	}
 
-	public boolean esMiembroSilver() {
-		return miembroSilver;
-	}
+
 
 	public String getNombre() {
 		return nombre;
@@ -38,7 +37,6 @@ public class Usuario {
 
 	@Override
 	public String toString() {
-		return "Usuario{" + "nombre='" + nombre + '\'' + ", email='" + email + '\'' + ", empleado=" + empleado
-				+ ", miembroGold=" + miembroGold + ", miembroSilver=" + miembroSilver + '}';
+		return "Usuario{" + "nombre='" + nombre + '\'' + ", email='" + email + '\'' + ", tipo de usuario =" + tipoUsuario + '}';
 	}
 }
