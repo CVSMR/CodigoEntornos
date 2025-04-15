@@ -45,23 +45,11 @@ public class EntornosFactorizar {
 				total = 0;
 			}
 
-			return total;
-		}
-
-		private double aplicarOpcionesEspeciales(boolean esOfertaEspecial, boolean esNavidad, boolean esMiembroVip,
-				double total) {// Metodo añadido, quiza hay que incializar double TOTAL;
-			// Opciones especiales
-			if (esOfertaEspecial) {
-				total *= 0.9;
-			}
-			if (esNavidad) {
-				total *= 0.85;
-			}
-			if (esMiembroVip) {
-				total *= 0.8;
-			}
-			return total;
-		}
+	        // Envio gratis
+	        
+	        if (!esEnvioGratis) {
+	            total += precioEnvio;
+	        }
 
 		private double aplicarCuotas(double total, boolean aplicarCuotas, int cuota) {
 			// Cuotas
@@ -87,34 +75,24 @@ public class EntornosFactorizar {
 			return total;
 		}
 
-	 
-	 	// Las ofertas conbinadas estan metidas en el mismo metodo
-	    
-	    private double aplicarDescuentosPromocionales(double total,boolean esOfertaEspecial,boolean esNavidad,boolean esMiembroVip){
-	    	if (esOfertaEspecial) {
-	            total *= 0.9;  
+	        // Invalidacion
+	        
+	        if (!validarProducto(tipoProducto, categoriaProducto)) {
+	            throw new IllegalArgumentException("El producto no es válido para esta compra.");
 	        }
-	        if (esNavidad) {
-	            total *= 0.85; 
+
+	        // usuario nulo
+	        
+	        if (usuario != null) {
+	            total = aplicarDescuentoPorUsuario(usuario, total);
 	        }
 	        if (esMiembroVip) {
 	            total *= 0.8;  
 	        }
 	        return total;
 	    }
-	    
-	    //Metodos de pago refatcorizados en un metodo
-	    
-	    private double aplicarRecargoPorMetodoPago(double total,String metodoPago) {
-	    	if (metodoPago.equals("TarjetaCredito")) {
-	    		total *=1.05;
-	    	} else if (metodoPago.equals("PayPal")) {
-	    		total *=1.02;
-	    	}
-	    	return total;
-	    }
-	  	//Aplicar cupones descuento
-	 
+
+	  
 	    private double aplicarCuponDescuento(double total, String codigoCupon) {
 	        if (codigoCupon.equals("CUPOFF")) {
 	            total *= 0.8;
