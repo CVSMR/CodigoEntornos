@@ -1,5 +1,5 @@
 package prueba;
 
 public enum Membresia {
-	GOLD, SILVER;
+	EMPLEADO, VIP, GOLD, SILVER;
 }

@@ -31,9 +31,8 @@ public class EntornosFactorizar {
 				total = aplicarCuponDescuento(total, codigoCupon);
 			}
 
-			if (!validarProducto(tipoProducto, categoriaProducto)) {
-				throw new IllegalArgumentException("El producto no es válido para esta compra.");
-			} // añadir excepciones
+	     
+	        
 
 			// ESTO SE TIENE QUE QUEDAR
 			if (usuario != null) {
@@ -113,14 +112,23 @@ public class EntornosFactorizar {
 			return false;
 		}
 
-		private double aplicarDescuentoPorUsuario(Usuario usuario, double total) {
-			if (usuario.esEmpleado()) {
-				total *= 0.7;
-			} else if (usuario.esMiembroGold()) {
-				total *= 0.85;
-			} else if (usuario.esMiembroSilver()) {
-				total *= 0.9;
-			}
-			return total;
-		}
+	   
+	    private double aplicarDescuentoPorUsuario(Usuario usuario, double total) {
+	      
+	        switch(usuario.getTipoUsuario()) {
+				case EMPLEADO ->{
+					total *= 0.7; 
+				}
+				case VIP ->{
+					total *= 0.8;
+				}
+				case GOLD ->{
+					total *= 0.85;
+				}
+				case SILVER ->{
+					total *= 0.9; 
+				}
+	        }
+	        return total;
+	    }
 }
