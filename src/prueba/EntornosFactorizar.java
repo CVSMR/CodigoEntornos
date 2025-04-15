@@ -5,17 +5,10 @@ public class EntornosFactorizar {
 		public double calculaDato(double precioBase, int cantidad, double descuento, double impuestos,
 				boolean tieneTarjetaFidelidad, double saldoTarjeta, boolean esEnvioGratis,
 				double precioEnvio, String tipoProducto, String categoriaProducto, String codigoCupon, Usuario usuario) {
-<<<<<<< HEAD
-			
-			double total = precioBase * cantidad;
-			
-		
-=======
 		
 			double total = precioBase * cantidad;
 			
 			// ESto tinee que ir junto?
->>>>>>> origin/Rama-Ruben
 			if (descuento > 0) {
 				total -= total * (descuento / 100);
 			}
@@ -23,28 +16,6 @@ public class EntornosFactorizar {
 			if (tieneTarjetaFidelidad && saldoTarjeta > 0) {
 				total -= saldoTarjeta;
 			}
-<<<<<<< HEAD
-
-			total += total * (impuestos / 100);
-	
-	       
-	        total += total * (impuestos / 100);
-	        // A partir de aqui copiaremos estas condiciones en un metodo a parte
-	        	descuentosEspeciales(esMiembroVip, esOfertaEspecial, esNavidad, total);
-	        //
-	        // Añado metodos de pago
-	        	pago(total, metodoPago);
-	        //
-	        // Metodos de cuota
-	        	cuota(aplicarCuotas, total, cuota);
-	        //
-	        
-	        if (metodoPago.equals("TarjetaCredito")) {
-	            total *= 1.05;
-	        } else if (metodoPago.equals("PayPal")) {
-	            total *= 1.02;
-	        }
-=======
 
 			total += total * (impuestos / 100);
 			// Tiene que ir junto
@@ -68,7 +39,6 @@ public class EntornosFactorizar {
 			if (usuario != null) {
 				total = aplicarDescuentoPorUsuario(usuario, total);
 			}
->>>>>>> origin/Rama-Ruben
 
 			
 			if (total < 0) {
@@ -137,40 +107,6 @@ public class EntornosFactorizar {
 			return false;
 		}
 
-<<<<<<< HEAD
-	     
-	        if (total < 0) {
-	            total = 0;
-	        }
-
-	        return total;
-	    }
-
-	
-	    private boolean validarProducto(String tipoProducto, String categoriaProducto) {
-	        if (tipoProducto.equals("Electronico") && categoriaProducto.equals("Smartphones")) {
-	            return true;
-	        } else if (tipoProducto.equals("Ropa") && categoriaProducto.equals("Hombre")) {
-	            return true;
-	        } else if (tipoProducto.equals("Ropa") && categoriaProducto.equals("Mujer")) {
-	            return true;
-	        }
-	        return false;
-	    }
-
-	   
-	    private double aplicarDescuentoPorUsuario(Usuario usuario, double total) {
-	        if (usuario.esEmpleado()) {
-	            total *= 0.7; 
-	        } else if (usuario.esMiembroGold()) {
-	            total *= 0.85;  
-	        } else if (usuario.esMiembroSilver()) {
-	            total *= 0.9; 
-	        }
-	        return total;
-	    }
-=======
->>>>>>> origin/Rama-Ruben
 		private double aplicarDescuentoPorUsuario(Usuario usuario, double total) {
 			if (usuario.esEmpleado()) {
 				total *= 0.7;
