@@ -32,6 +32,10 @@ public class EntornosFactorizar {
 			}
 
 	     
+	        if (esMiembroVip) {
+	            total *= 0.8;
+	        }
+
 	        
 
 			// ESTO SE TIENE QUE QUEDAR
