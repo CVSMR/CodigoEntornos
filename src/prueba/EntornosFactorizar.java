@@ -32,9 +32,7 @@ public class EntornosFactorizar {
 			}
 
 	     
-	        if (esMiembroVip) {
-	            total *= 0.8;
-	        }
+	        
 
 	        
 
@@ -53,6 +51,21 @@ public class EntornosFactorizar {
 	        if (!esEnvioGratis) {
 	            total += precioEnvio;
 	        }
+	        
+	        // Invalidacion
+	        
+	        if (!validarProducto(tipoProducto, categoriaProducto)) {
+	            throw new IllegalArgumentException("El producto no es válido para esta compra.");
+	        }
+
+	        // usuario nulo
+	        
+	        if (usuario != null) {
+	            total = aplicarDescuentoPorUsuario(usuario, total);
+	        }
+	        
+	        return total;
+	    }
 
 		private double aplicarCuotas(double total, boolean aplicarCuotas, int cuota) {
 			// Cuotas
@@ -78,22 +91,7 @@ public class EntornosFactorizar {
 			return total;
 		}
 
-	        // Invalidacion
 	        
-	        if (!validarProducto(tipoProducto, categoriaProducto)) {
-	            throw new IllegalArgumentException("El producto no es válido para esta compra.");
-	        }
-
-	        // usuario nulo
-	        
-	        if (usuario != null) {
-	            total = aplicarDescuentoPorUsuario(usuario, total);
-	        }
-	        if (esMiembroVip) {
-	            total *= 0.8;  
-	        }
-	        return total;
-	    }
 
 	  
 	    private double aplicarCuponDescuento(double total, String codigoCupon) {
