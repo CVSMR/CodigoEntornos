@@ -2,9 +2,9 @@ package prueba;
 
 public class EntornosFactorizar {
 	
-		public double calculaDato(double precioBase, int cantidad, double descuento, double impuestos,
+		public double calculaDato( int cantidad, Producto producto,
 				boolean tieneTarjetaFidelidad, double saldoTarjeta, boolean esEnvioGratis, boolean esOfertaEspecial, boolean esNavidad,
-				double precioEnvio, String tipoProducto, String categoriaProducto, String codigoCupon, Usuario usuario) {
+				double precioEnvio, String codigoCupon, Usuario usuario) {
 		
 			double total = precioBase * cantidad;
 			
@@ -20,7 +20,7 @@ public class EntornosFactorizar {
 			total += total * (impuestos / 100);
 			
 
-		
+			
 
 			// Metodo en el cual suma el precio del envio en caso de no ser envio gratis.
 			if (!esEnvioGratis) {
