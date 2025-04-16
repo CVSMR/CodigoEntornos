@@ -3,24 +3,18 @@ package prueba;
 public class EntornosFactorizar {
 	
 		public double calculaDato( int cantidad, Producto producto,
-				boolean tieneTarjetaFidelidad, double saldoTarjeta, boolean esEnvioGratis, boolean esOfertaEspecial, boolean esNavidad,
-				double precioEnvio, String codigoCupon, Usuario usuario) {
+				 boolean esEnvioGratis, boolean esOfertaEspecial, boolean esNavidad, boolean aplicarCuotas,
+				double precioEnvio, String codigoCupon, Usuario usuario, int cuota, MetodoPago metodo) {
 		
 			double total = precioBase * cantidad;
-			
 			
 			if (descuento > 0) {
 				total -= total * (descuento / 100);
 			}
 
-			if (tieneTarjetaFidelidad && saldoTarjeta > 0) {
-				total -= saldoTarjeta;
+			if (usuario.isTieneTarjetaFidelidad() && usuario.getSaldoTarjeta() > 0) {
+				total -= usuario.getSaldoTarjeta();
 			}
-
-			total += total * (impuestos / 100);
-			
-
-			
 
 			// Metodo en el cual suma el precio del envio en caso de no ser envio gratis.
 			if (!esEnvioGratis) {
@@ -39,7 +33,6 @@ public class EntornosFactorizar {
 			}
 			
 	        // Valida el tipo de producto comprobando que exista y lanzando excpcion en caso contrario.
-	        
 	        if (!validarProducto(tipoProducto, categoriaProducto)) {
 	            throw new IllegalArgumentException("El producto no es válido para esta compra.");
 	        }
@@ -48,15 +41,14 @@ public class EntornosFactorizar {
 	        if (usuario != null && !usuario.getTipoUsuario().equals(Membresia.NORMAL)) {
 	            total = aplicarDescuentoPorUsuario(usuario, total);
 	        }
-	        
 	        // ESTO SE TIENE QUE QUEDAR
-			
-			
+	        
+			total = aplicarCuotas(total, aplicarCuotas, cuota);
+			total = aplicarCuoteMetodoPago(metodoPago, total);
 	     	if (total < 0) {
 	     		total = 0;
 	     	}
-	        return total;
-	        
+	        return total; 
 	    }
 
 		//Se separa este método del anterior y se pone como public, habra que acceder a el despues de acceder al metodo calcularDato.
@@ -64,7 +56,7 @@ public class EntornosFactorizar {
 		// si hay cuota decide entre 1,2,3
 		// Devuelve el total actualizado
 		
-		public double aplicarCuotas(double total, boolean aplicarCuotas, int cuota) {
+		private double aplicarCuotas(double total, boolean aplicarCuotas, int cuota) {
 			// Cuotas
 			if (!aplicarCuotas) return total;
 			switch (cuota) {
@@ -77,7 +69,7 @@ public class EntornosFactorizar {
 		
 		//Se separa este método del método inicial para que quede más limpio, habra que acceder a el despues de los dos anteriores.
 		//Aplicara un coste segun el método de pago.
-		public double aplicarCuoteMetodoPago(MetodoPago metodo, double total) {
+		private double aplicarCuoteMetodoPago(MetodoPago metodo, double total) {
 			// Metodo PAgos
 			if (metodo.equals(MetodoPago.TARJETA_CREDITO)) {
 				total *= 1.05;
@@ -136,7 +128,7 @@ public class EntornosFactorizar {
 					total *= 0.9; 
 				}
 				default ->{
-					
+					//El defaullt es necesario por sintaxis pero como nunca va a entrar no le ponemos nada
 				}
 				
 	        }
