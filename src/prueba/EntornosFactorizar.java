@@ -37,9 +37,7 @@ public class EntornosFactorizar {
 			if (codigoCupon != null && !codigoCupon.isEmpty()) {
 				total = aplicarCuponDescuento(total, codigoCupon);
 			}
-
 			
-	        
 	        // Valida el tipo de producto comprobando que exista y lanzando excpcion en caso contrario.
 	        
 	        if (!validarProducto(tipoProducto, categoriaProducto)) {
@@ -62,16 +60,17 @@ public class EntornosFactorizar {
 	    }
 
 		//Se separa este método del anterior y se pone como public, habra que acceder a el despues de acceder al metodo calcularDato.
+		// Si no hay cuota devuelve el total sin tocarlo
+		// si hay cuota decide entre 1,2,3
+		// Devuelve el total actualizado
+		
 		public double aplicarCuotas(double total, boolean aplicarCuotas, int cuota) {
 			// Cuotas
-			if (aplicarCuotas) {
-				if (cuota == 3) {
-					total *= 1.1;
-				} else if (cuota == 6) {
-					total *= 1.2;
-				} else if (cuota == 12) {
-					total *= 1.3;
-				}
+			if (!aplicarCuotas) return total;
+			switch (cuota) {
+				case 1 -> total *= 1.1;
+				case 2 -> total *= 1.2;
+				case 3 -> total *= 1.3;
 			}
 			return total;
 		}
@@ -100,7 +99,6 @@ public class EntornosFactorizar {
 	        return total;
 	    }
 
-	  
 	    private double aplicarCuponDescuento(double total, String codigoCupon) {
 	        if (codigoCupon.equals("CUPOFF")) {
 	            total *= 0.8;
@@ -121,7 +119,6 @@ public class EntornosFactorizar {
 			return false;
 		}
 
-	   
 		//Este método aplicara descuento en base a la membresia.
 	    private double aplicarDescuentoPorUsuario(Usuario usuario, double total) {
 	      
