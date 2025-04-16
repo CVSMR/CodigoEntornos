@@ -4,12 +4,12 @@ public class EntornosFactorizar {
 	
 		public double calculaDato( int cantidad, Producto producto,
 				 boolean esEnvioGratis, boolean esOfertaEspecial, boolean esNavidad, boolean aplicarCuotas,
-				double precioEnvio, String codigoCupon, Usuario usuario, int cuota, MetodoPago metodo) {
+				double precioEnvio, String codigoCupon, Usuario usuario, int cuota, MetodoPago metodoPago) {
 		
-			double total = precioBase * cantidad;
+			double total = producto.getPrecioBase() * cantidad;
 			
-			if (descuento > 0) {
-				total -= total * (descuento / 100);
+			if (producto.getDescuento() > 0) {
+				total -= total * (producto.getDescuento() / 100);
 			}
 
 			if (usuario.isTieneTarjetaFidelidad() && usuario.getSaldoTarjeta() > 0) {
@@ -33,7 +33,7 @@ public class EntornosFactorizar {
 			}
 			
 	        // Valida el tipo de producto comprobando que exista y lanzando excpcion en caso contrario.
-	        if (!validarProducto(tipoProducto, categoriaProducto)) {
+	        if (!validarProducto(producto.getTipoPrducto(), producto.getCategoriaProducto())) {
 	            throw new IllegalArgumentException("El producto no es válido para esta compra.");
 	        }
 
