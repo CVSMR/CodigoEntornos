@@ -3,11 +3,10 @@ package prueba;
 public class EntornosFactorizar {
 	
 		public double calculaDato( int cantidad, Producto producto,
-				 boolean esEnvioGratis, boolean esOfertaEspecial, boolean esNavidad,
-				double precioEnvio, String codigoCupon, Usuario usuario) {
+				 boolean esEnvioGratis, boolean esOfertaEspecial, boolean esNavidad, boolean aplicarCuotas,
+				double precioEnvio, String codigoCupon, Usuario usuario, int cuota, MetodoPago metodo) {
 		
 			double total = precioBase * cantidad;
-			
 			
 			if (descuento > 0) {
 				total -= total * (descuento / 100);
@@ -42,15 +41,14 @@ public class EntornosFactorizar {
 	        if (usuario != null && !usuario.getTipoUsuario().equals(Membresia.NORMAL)) {
 	            total = aplicarDescuentoPorUsuario(usuario, total);
 	        }
-	        
 	        // ESTO SE TIENE QUE QUEDAR
-			
-			
+	        
+			total = aplicarCuotas(total, aplicarCuotas, cuota);
+			total = aplicarCuoteMetodoPago(metodoPago, total);
 	     	if (total < 0) {
 	     		total = 0;
 	     	}
-	        return total;
-	        
+	        return total; 
 	    }
 
 		//Se separa este método del anterior y se pone como public, habra que acceder a el despues de acceder al metodo calcularDato.
