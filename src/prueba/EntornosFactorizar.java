@@ -91,11 +91,11 @@ public class EntornosFactorizar {
 	    }
 
 	    private double aplicarCuponDescuento(double total, String codigoCupon) {
-	        if (codigoCupon.equals("CUPOFF")) {
-	            total *= 0.8;
-	        } else if (codigoCupon.equals("NAVIDAD2025")) {
-	            total *= 0.75;
-	        }
+	    	switch (codigoCupon) { 
+				case "CUPOFF" -> total *= 0.8; 
+				case "NAVIDAD2025" -> total *= 0.75; 
+				default -> {} //  No hay descuento si no hay caso cupon
+	    	}
 	        return total;
 	    }
 
