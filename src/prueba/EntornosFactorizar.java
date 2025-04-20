@@ -4,12 +4,12 @@ public class EntornosFactorizar {
 	
 		public double calculaDato( int cantidad, Producto producto,
 				 boolean esEnvioGratis, boolean esOfertaEspecial, boolean esNavidad, boolean aplicarCuotas,
-				double precioEnvio, String codigoCupon, Usuario usuario, int cuota, MetodoPago metodo) {
+				double precioEnvio, String codigoCupon, Usuario usuario, int cuota, MetodoPago metodoPago) {
 		
-			double total = precioBase * cantidad;
+			double total = producto.getPrecioBase() * cantidad;
 			
-			if (descuento > 0) {
-				total -= total * (descuento / 100);
+			if (producto.getDescuento() > 0) {
+				total -= total * (producto.getDescuento() / 100);
 			}
 
 			if (usuario.isTieneTarjetaFidelidad() && usuario.getSaldoTarjeta() > 0) {
@@ -26,14 +26,13 @@ public class EntornosFactorizar {
 				total = aplicarDescuentoCampaña(total, esOfertaEspecial, esNavidad);
 			}
 			
-			
 			//llamada a método donde se aplicaria cupon descuento en caso de contener un código descuento.
 			if (codigoCupon != null && !codigoCupon.isEmpty()) {
 				total = aplicarCuponDescuento(total, codigoCupon);
 			}
 			
 	        // Valida el tipo de producto comprobando que exista y lanzando excpcion en caso contrario.
-	        if (!validarProducto(tipoProducto, categoriaProducto)) {
+	        if (!validarProducto(producto.getTipoPrducto(), producto.getCategoriaProducto())) {
 	            throw new IllegalArgumentException("El producto no es válido para esta compra.");
 	        }
 
@@ -92,11 +91,11 @@ public class EntornosFactorizar {
 	    }
 
 	    private double aplicarCuponDescuento(double total, String codigoCupon) {
-	        if (codigoCupon.equals("CUPOFF")) {
-	            total *= 0.8;
-	        } else if (codigoCupon.equals("NAVIDAD2025")) {
-	            total *= 0.75;
-	        }
+	    	switch (codigoCupon) { 
+				case "CUPOFF" -> total *= 0.8; 
+				case "NAVIDAD2025" -> total *= 0.75; 
+				default -> {} //  No hay descuento si no hay caso cupon
+	    	}
 	        return total;
 	    }
 
