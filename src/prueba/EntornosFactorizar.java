@@ -12,15 +12,6 @@ public class EntornosFactorizar {
 				total -= total * (producto.getDescuento() / 100);
 			}
 
-			if (usuario.isTieneTarjetaFidelidad() && usuario.getSaldoTarjeta() > 0) {
-				total -= usuario.getSaldoTarjeta();
-			}
-
-			// Metodo en el cual suma el precio del envio en caso de no ser envio gratis.
-			if (!esEnvioGratis) {
-				total += precioEnvio;
-			}
-
 			//Creo esta nueva llamada a método en caso de que haya presente una campaña de descuento.
 			if(esOfertaEspecial || esNavidad) {
 				total = aplicarDescuentoCampaña(total, esOfertaEspecial, esNavidad);
@@ -37,14 +28,33 @@ public class EntornosFactorizar {
 	            throw new IllegalArgumentException("El producto no es válido para esta compra.");
 	        }
 
-	        // Llamada a método para aplicar descuento por tipo de membresia, siempre que el usuario no sea null.
+	        // Llamada a método para aplicar descuento por tipo de membresia, siempre que el usuario no sea null o normal.
 	        if (usuario != null && !usuario.getTipoUsuario().equals(Membresia.NORMAL)) {
 	            total = aplicarDescuentoPorUsuario(usuario, total);
 	        }
-	        // ESTO SE TIENE QUE QUEDAR
+
+	        // Metodo en el cual suma el precio del envio en caso de no ser envio gratis.
+	     	if (!esEnvioGratis) {
+	   			total += precioEnvio;
+	 		}
 	        
 			total = aplicarCuotas(total, aplicarCuotas, cuota);
-			total = aplicarCuoteMetodoPago(metodoPago, total);
+			
+			//Se comprueba que el usuario tenga tarjeta de fidelidad y el saldo de la misma, se usará dicho saldo, y si sigue haciendo falta pago, 
+			//se pasará el método de la forma de pago.
+			if (usuario.isTieneTarjetaFidelidad() && usuario.getSaldoTarjeta() > 0) {
+				if(usuario.getSaldoTarjeta() >= total) {
+					usuario.setSaldoTarjeta(usuario.getSaldoTarjeta() - total);
+					total = 0;
+				}else {
+					total -= usuario.getSaldoTarjeta();
+					usuario.setSaldoTarjeta(0);
+					total = aplicarCuoteMetodoPago(metodoPago, total);
+				}	
+			}else {
+				total = aplicarCuoteMetodoPago(metodoPago, total);
+			}
+			
 	     	if (total < 0) {
 	     		total = 0;
 	     	}
