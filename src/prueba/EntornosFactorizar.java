@@ -30,11 +30,6 @@ public class EntornosFactorizar {
 	        if (usuario != null && !usuario.getTipoUsuario().equals(Membresia.NORMAL)) {
 	            total = aplicarDescuentoPorUsuario(usuario, total);
 	        }
-
-	        // Metodo en el cual suma el precio del envio en caso de no ser envio gratis.
-	     	if (!esEnvioGratis) {
-	   			total += precioEnvio;
-	 		}
 	        
 			total = aplicarCuotas(total, aplicarCuotas, cuota);
 			
