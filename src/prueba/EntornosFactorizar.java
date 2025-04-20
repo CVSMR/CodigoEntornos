@@ -2,9 +2,8 @@ package prueba;
 
 public class EntornosFactorizar {
 	
-		public double calculaDato( int cantidad, Producto producto,
-				 boolean esEnvioGratis, boolean esOfertaEspecial, boolean esNavidad, boolean aplicarCuotas,
-				double precioEnvio, String codigoCupon, Usuario usuario, int cuota, MetodoPago metodoPago) {
+		public double calculaDato( int cantidad, Producto producto,boolean esOfertaEspecial, boolean esNavidad, boolean aplicarCuotas,
+									String codigoCupon, Usuario usuario, int cuota, MetodoPago metodoPago) {
 		
 			double total = producto.getPrecioBase() * cantidad;
 			
@@ -39,6 +38,12 @@ public class EntornosFactorizar {
 	        
 			total = aplicarCuotas(total, aplicarCuotas, cuota);
 			
+			//Para reducir el numero de parametros a pasar al método, uso este if para incluir unos gastos de envio de 10€ en caso de ser inferior 
+			// a 100 el total.
+			if (total < 100) {
+				total += 10;
+			}
+			
 			//Se comprueba que el usuario tenga tarjeta de fidelidad y el saldo de la misma, se usará dicho saldo, y si sigue haciendo falta pago, 
 			//se pasará el método de la forma de pago.
 			if (usuario.isTieneTarjetaFidelidad() && usuario.getSaldoTarjeta() > 0) {
@@ -53,7 +58,7 @@ public class EntornosFactorizar {
 			}else {
 				total = aplicarCuoteMetodoPago(metodoPago, total);
 			}
-			
+						
 	     	if (total < 0) {
 	     		total = 0;
 	     	}
